@@ -7,6 +7,7 @@ const wxpush = require("./wxPusher");
 const pushPlus = require("./pushPlus");
 const bark = require("./bark");
 const showDoc = require("./showDoc");
+const feishu = require("./feishu");
 
 const logger = log4js.getLogger("push");
 logger.addContext("user", "push");
@@ -180,6 +181,29 @@ const pushShowDoc = (title, desp) => {
     });
 };
 
+const pushFeishu = (title, desp) => {
+  if (!feishu.webhookUrl) {
+    return;
+  }
+  const data = {
+    msg_type: "text",
+    content: {
+      text: `${title}\n\n${desp}`
+    }
+  };
+  superagent
+    .post(feishu.webhookUrl)
+    .send(data)
+    .then((response) => {
+      // 请求成功
+      logger.info("飞书推送成功");
+    })
+    .catch((error) => {
+      // 请求失败
+      logger.error(`飞书推送失败: ${JSON.stringify(error)}`);
+    });
+};
+
 const push = (title, desp) => {
   pushServerChan(title, desp);
   pushTelegramBot(title, desp);
@@ -188,6 +212,7 @@ const push = (title, desp) => {
   pushPlusPusher(title, desp);
   pushBark(title, desp);
   pushShowDoc(title, desp);
+  pushFeishu(title, desp);
 };
 
 module.exports = push;
