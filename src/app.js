@@ -111,8 +111,31 @@ async function main() {
   } finally {
     const logs = catLogs();
     const events = recording.replay();
-    const content = events.map((e) => `${e.data.join("")}`).join("  \n");
-    push("天翼云盘自动签到任务", logs + content);
+    const content = events.map((e) => `${e.data.join("")}`).join("\n");
+    
+    // 优化推送内容格式
+    let formattedContent = "";
+    const lines = (logs + content).split("\n");
+    
+    for (const line of lines) {
+      if (line.includes("开始执行")) {
+        formattedContent += `📋 ${line}\n`;
+      } else if (line.includes("个人签到任务")) {
+        if (line.includes("获得")) {
+          formattedContent += `✅ ${line}\n`;
+        } else {
+          formattedContent += `⏰ ${line}\n`;
+        }
+      } else if (line.includes("执行完毕")) {
+        formattedContent += `⏱️ ${line}\n`;
+      } else if (line.includes("个人容量")) {
+        formattedContent += `💾 ${line}\n`;
+      } else if (line) {
+        formattedContent += `📝 ${line}\n`;
+      }
+    }
+    
+    push("☁️ 天翼云盘自动签到报告", formattedContent);
     recording.erase();
     cleanLogs();
   }

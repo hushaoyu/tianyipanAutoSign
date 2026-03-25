@@ -186,9 +186,32 @@ const pushFeishu = (title, desp) => {
     return;
   }
   const data = {
-    msg_type: "text",
-    content: {
-      text: `${title}\n\n${desp}`
+    msg_type: "interactive",
+    card: {
+      config: {
+        wide_screen_mode: true
+      },
+      header: {
+        title: {
+          tag: "plain_text",
+          content: title
+        },
+        template: "turquoise"
+      },
+      body: {
+        tag: "div",
+        text: {
+          tag: "lark_md",
+          content: desp
+        }
+      },
+      footer: {
+        tag: "div",
+        text: {
+          tag: "plain_text",
+          content: `执行时间：${new Date().toLocaleString()}`
+        }
+      }
     }
   };
   superagent
