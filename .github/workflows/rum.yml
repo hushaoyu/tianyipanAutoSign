@@ -2,14 +2,14 @@ name: Cloud check in action
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 7 * * *
+    - cron: 0 0 * * *
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: user
     steps:
       - name: 🔀 随机延迟（早上）
-        if: github.event.schedule == '0 7 * * *'
+        if: github.event.schedule == '0 0 * * *'
         run: |
           delay=$((RANDOM % 60))
           echo "早上签到，延迟 $delay 秒后开始.."
