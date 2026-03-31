@@ -188,6 +188,7 @@ const pushFeishu = (title, desp) => {
   const data = {
     msg_type: "interactive",
     card: {
+      schema: "2.0",
       config: {
         wide_screen_mode: true
       },
@@ -198,20 +199,15 @@ const pushFeishu = (title, desp) => {
         },
         template: "turquoise"
       },
-      body: {
-        tag: "div",
-        text: {
-          tag: "lark_md",
-          content: desp
+      elements: [
+        {
+          tag: "div",
+          text: {
+            tag: "lark_md",
+            content: desp
+          }
         }
-      },
-      footer: {
-        tag: "div",
-        text: {
-          tag: "plain_text",
-          content: `执行时间：${new Date().toLocaleString()}`
-        }
-      }
+      ]
     }
   };
   superagent
