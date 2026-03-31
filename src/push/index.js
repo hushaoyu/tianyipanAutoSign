@@ -185,29 +185,11 @@ const pushFeishu = (title, desp) => {
   if (!feishu.webhookUrl) {
     return;
   }
+  // 使用简单的文本消息格式
   const data = {
-    msg_type: "interactive",
-    card: {
-      schema: "2.0",
-      config: {
-        wide_screen_mode: true
-      },
-      header: {
-        title: {
-          tag: "plain_text",
-          content: title
-        },
-        template: "turquoise"
-      },
-      elements: [
-        {
-          tag: "div",
-          text: {
-            tag: "lark_md",
-            content: desp
-          }
-        }
-      ]
+    msg_type: "text",
+    content: {
+      text: `${title}\n\n${desp}`
     }
   };
   superagent
