@@ -218,8 +218,12 @@ const pushFeishu = (title, desp) => {
     .post(feishu.webhookUrl)
     .send(data)
     .then((response) => {
-      // 请求成功
-      logger.info("飞书推送成功");
+      // 检查飞书 API 响应
+      if (response.body?.code === 0) {
+        logger.info("飞书推送成功");
+      } else {
+        logger.error(`飞书推送失败: ${JSON.stringify(response.body)}`);
+      }
     })
     .catch((error) => {
       // 请求失败
